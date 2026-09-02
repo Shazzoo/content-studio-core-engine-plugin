@@ -21,9 +21,15 @@ class ContentStudioSetting extends Model
         'route_prefix',
         'articles_per_block',
         'articles_per_page',
+        'index_template_key',
+        'index_template_settings',
+        'article_template_key',
+        'article_template_settings',
     ];
 
     protected $casts = [
+        'index_template_settings' => 'array',
+        'article_template_settings' => 'array',
         'ai_enabled' => 'bool',
         'meta' => 'array',
         'articles_per_block' => 'integer',

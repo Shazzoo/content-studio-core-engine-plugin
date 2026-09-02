@@ -3,14 +3,21 @@
 namespace Shazzoo\ContentStudio\Filament\Pages;
 
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Shazzoo\ContentStudio\Models\ContentStudioSetting;
 use Shazzoo\ContentStudio\Support\Engine\ProjectInfo;
+use Shazzoo\ContentStudioCore\Support\Blocks\Adapters\FilamentFieldAdapter;
+use Shazzoo\ContentStudioCore\Support\Templates\TemplateSettingsDefinition;
+use Shazzoo\ContentStudioCore\Support\Theming\TemplateDefinitionRegistry;
+use Shazzoo\ContentStudioCore\Support\Theming\TemplateRegistry;
 
 class ContentStudioSettingsPage extends Page
 {
@@ -70,8 +77,71 @@ class ContentStudioSettingsPage extends Page
                             ->required()
                             ->helperText('Aantal artikelen op de artikelen-overzichtspagina.'),
                     ]),
+                Section::make('Templates')
+                    ->description('Optioneel. Zonder gekozen template rendert de plugin zijn eigen views.')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('index_template_key')
+                            ->label('Overview template')
+                            ->options(fn (): array => $this->templateOptions())
+                            ->searchable()
+                            ->live()
+                            ->placeholder('Use plugin default')
+                            ->helperText('Theme template for the articles overview page.'),
+                        Select::make('article_template_key')
+                            ->label('Article template')
+                            ->options(fn (): array => $this->templateOptions())
+                            ->searchable()
+                            ->live()
+                            ->placeholder('Use plugin default')
+                            ->helperText('Theme template for article detail pages.'),
+                        Group::make()
+                            ->schema(fn (Get $get): array => $this->templateSettingsSchema($get, 'index_template_key'))
+                            ->statePath('index_template_settings')
+                            ->columnSpan(1),
+                        Group::make()
+                            ->schema(fn (Get $get): array => $this->templateSettingsSchema($get, 'article_template_key'))
+                            ->statePath('article_template_settings')
+                            ->columnSpan(1),
+                    ]),
             ])
             ->statePath('data');
+    }
+
+    private function templateOptions(): array
+    {
+        return collect(app(TemplateRegistry::class)->all())
+            ->mapWithKeys(fn (array $template, string $key): array => [
+                $key => $template['label'] ?? $template['meta']['label'] ?? $key,
+            ])
+            ->toArray();
+    }
+
+    /**
+     * Velden van het gekozen template. Leeg zolang er geen template gekozen is,
+     * zodat de sectie niets toont op een site die de plugin-views gebruikt.
+     */
+    private function templateSettingsSchema(Get $get, string $templateKeyField): array
+    {
+        $key = (string) ($get($templateKeyField) ?: $get('../'.$templateKeyField) ?: $get('../../'.$templateKeyField));
+
+        if ($key === '') {
+            return [];
+        }
+
+        $resolver = app(TemplateDefinitionRegistry::class)->get($key);
+
+        if (! $resolver) {
+            return [];
+        }
+
+        $definition = $resolver();
+
+        if (! $definition instanceof TemplateSettingsDefinition) {
+            return [];
+        }
+
+        return app(FilamentFieldAdapter::class)->convertSchema($definition->schema ?? []);
     }
 
     public function save(): void
