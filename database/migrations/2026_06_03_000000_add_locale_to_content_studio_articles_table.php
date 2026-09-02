@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('content_studio_articles', function (Blueprint $table) {
-            $table->string('locale', 10)
-                ->default(config('app.locale', 'nl'))
-                ->after('content_studio_article_id')
-                ->index();
+            if (! Schema::hasColumn('content_studio_articles', 'locale')) {
+                $table->string('locale', 10)
+                    ->default(config('app.locale', 'nl'))
+                    ->after('content_studio_article_id')
+                    ->index();
+            }
         });
     }
 
@@ -24,9 +26,15 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasTable('content_studio_articles')) {
+            return;
+        }
+
         Schema::table('content_studio_articles', function (Blueprint $table) {
-            $table->dropIndex(['locale']);
-            $table->dropColumn('locale');
+            if (Schema::hasColumn('content_studio_articles', 'locale')) {
+                $table->dropIndex(['locale']);
+                $table->dropColumn('locale');
+            }
         });
     }
 };

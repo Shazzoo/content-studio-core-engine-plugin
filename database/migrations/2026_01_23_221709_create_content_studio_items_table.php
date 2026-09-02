@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('content_studio_items')) {
+            return;
+        }
+
         Schema::create('content_studio_items', function (Blueprint $table) {
             $table->id();
             // Content identity

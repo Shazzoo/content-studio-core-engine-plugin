@@ -12,9 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('content_studio_items', function (Blueprint $table) {
-            $table->string('job_status')->nullable(); // queued|running|done|failed
-            $table->text('job_error')->nullable();
-            $table->foreignId('generated_page_id')->nullable()->constrained('pages')->nullOnDelete();
+            if (! Schema::hasColumn('content_studio_items', 'job_status')) {
+                $table->string('job_status')->nullable(); // queued|running|done|failed
+                $table->text('job_error')->nullable();
+            }
+
+            if (! Schema::hasColumn('content_studio_items', 'generated_page_id')) {
+                $table->foreignId('generated_page_id')->nullable()->constrained('pages')->nullOnDelete();
+            }
         });
     }
 
@@ -23,10 +28,20 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (! Schema::hasTable('content_studio_items')) {
+            return;
+        }
+
         Schema::table('content_studio_items', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('generated_page_id');
-            $table->dropColumn('job_error');
-            $table->dropColumn('job_status');
+            if (Schema::hasColumn('content_studio_items', 'generated_page_id')) {
+                $table->dropConstrainedForeignId('generated_page_id');
+            }
+
+            foreach (['job_error', 'job_status'] as $column) {
+                if (Schema::hasColumn('content_studio_items', $column)) {
+                    $table->dropColumn($column);
+                }
+            }
         });
     }
 };
