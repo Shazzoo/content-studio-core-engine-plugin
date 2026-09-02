@@ -54,14 +54,14 @@
             color: var(--cs-pull-quote-accent);
         }
 
-        @media (prefers-color-scheme: dark) {
-            .article-body {
-                --cs-pull-quote-bg: rgb(245 158 11 / 0.12);
-                --cs-pull-quote-text: #ffffff;
-            }
-        }
-
-        .dark .article-body {
+        /*
+         * Alleen meebewegen met een site die zelf een donkere modus heeft, dus
+         * op de .dark-klasse en niet op prefers-color-scheme. Dat laatste volgt
+         * de instelling van de bezoeker en maakte de tekst wit op een site die
+         * altijd licht is.
+         */
+        .dark .article-body,
+        [data-theme='dark'] .article-body {
             --cs-pull-quote-bg: rgb(245 158 11 / 0.12);
             --cs-pull-quote-text: #ffffff;
         }
