@@ -1,22 +1,33 @@
-# Content Studio Core — Engine plugin
+# Content Studio — Engine plugin
 
-Blog articles generated and synced from the Content Studio Engine, as a plugin
-for [Content Studio Core](https://github.com/Shazzoo/content-studio-core).
+A plugin for [Content Studio Core](https://github.com/Shazzoo/content-studio-core)
+that publishes blog articles generated in the Content Studio Engine.
 
-> **This is the plugin for the Core CMS.** Sites still running the pre-Core CMS
-> (where the CMS lives in the site's own `App\Support\*` namespace, such as
-> shazzoo-site) use the separate `Shazzoo/content-studio-plugin` repository
-> instead. The two are not interchangeable: this package imports
-> `Shazzoo\ContentStudioCore\Support\*`, which does not exist on a pre-Core
-> site.
+It syncs articles from the Engine into your site, gives them routes, an index
+and detail page, blocks you can drop into any page, SEO metadata and sitemap
+entries — and confirms back to the Engine once an article is live.
 
-One package, many sites. The functionality lives here and is updated with
-`composer update`; **each site keeps its own styling** through view overrides.
+One package serves every site. The functionality is updated with
+`composer update`; each site keeps its own look through view overrides, so no
+site needs its own copy.
+
+## What it gives you
+
+| | |
+|---|---|
+| **Article sync** | `content-studio:articles`, scheduled daily, pulling approved content from the Engine |
+| **Routes** | `/{prefix}` and `/{prefix}/{slug}`, locale-prefixed on multilingual sites |
+| **Pages** | An article index and a detail page, overridable by your theme |
+| **Blocks** | An article listing block for any page, plus overview and body blocks |
+| **Admin** | A Content Studio settings page for API credentials, route prefix and paging |
+| **SEO** | Metadata, Open Graph and schema.org, applied through Core's SEO layer |
+| **Sitemap** | Article URLs registered with Core's sitemap generator |
+| **Publish confirmation** | Tells the Engine an article is live, so it drops out of the pending list |
 
 ## Requirements
 
 - PHP 8.3+
-- `shazzoo/content-studio-core` ^0.1.6 (the override mechanism needs 0.1.6)
+- `shazzoo/content-studio-core` ^0.1.6
 
 ## Install
 
@@ -24,9 +35,36 @@ One package, many sites. The functionality lives here and is updated with
 composer require shazzoo/content-studio-core-engine-plugin
 ```
 
-Then activate **Content Studio** under *Instellingen → Plugins*. Activation runs
-the migrations and publishes assets. Configure the API key, project code and
-route prefix on the Content Studio Settings page.
+Activate **Content Studio** under *Instellingen → Plugins*. Activating it runs
+the plugin's migrations and publishes its assets.
+
+## Configure
+
+Open **Content Studio Settings** in the admin and fill in:
+
+| Setting | Meaning |
+|---|---|
+| `cs_api_key` | Your Content Studio Engine API key |
+| `cs_project_code` | The project to pull articles from |
+| `route_prefix` | URL segment for articles. `blog` gives `/blog` and `/blog/{slug}` |
+| `articles_per_page` | Articles on the index page |
+| `articles_per_block` | Articles in the listing block |
+
+The page shows which Engine project you are connected to and how many articles
+are available, so you can confirm the credentials work before syncing.
+
+The Engine API URL defaults to the hosted Engine and can be pointed elsewhere
+with `CONTENT_STUDIO_ENGINE_API_URL` in `.env`.
+
+## Sync articles
+
+```bash
+php artisan content-studio:articles
+```
+
+Registered to run daily. Only content approved in the Engine is pulled. After an
+article is stored the plugin confirms publication back to the Engine, so a
+synced article drops out of the pending list on the next run.
 
 ## Styling per site
 
@@ -34,28 +72,25 @@ The plugin ships working, deliberately plain views. A site overrides only what
 it wants to restyle; everything else keeps coming from the package, so plugin
 updates still reach the views you did not touch.
 
-There are three levels, cheapest first.
+Three levels, cheapest first.
 
 ### 1. Override individual views
-
-Publish the views you want to change:
 
 ```bash
 php artisan vendor:publish --tag=content-studio-components
 ```
 
-That copies the component views into `resources/views/vendor/content-studio-plugin/components/`.
-Edit them freely — markup, Tailwind classes, structure. Any file you delete from
-that directory falls back to the package version.
+That copies the component views into
+`resources/views/vendor/content-studio-plugin/components/`. Edit them freely —
+markup, classes, structure. Delete any file from that directory and it falls
+back to the package version.
 
-Use `--tag=content-studio-views` instead to publish *all* views including the
-article pages and pagination.
+Use `--tag=content-studio-views` to publish everything, including the article
+pages and pagination.
 
-> **Publish only what you restyle.** Every published file is a file you now
-> maintain: it stops receiving upstream changes. Restyling three components is
-> three files to maintain, not sixteen.
-
-Available views:
+> **Publish only what you restyle.** Every published file is one you now
+> maintain: it stops receiving upstream changes. Restyling three components
+> means three files to maintain, not sixteen.
 
 | View | Purpose |
 |---|---|
@@ -74,9 +109,19 @@ Available views:
 | `articles/show.blade.php` | Article detail page |
 | `partials/pagination.blade.php` | Pagination |
 
+**When copying a view out of another project**, rewrite any references to that
+project's namespaces to this package's:
+
+```
+content-studio-plugin::            (view and translation namespace)
+Shazzoo\ContentStudio\             (PHP classes, including inside @php blocks)
+```
+
+A stale namespace in an override fails at render time, not at install time.
+
 ### 2. Theme templates
 
-For the index and detail pages, the active theme wins over the plugin entirely.
+For the index and detail pages the active theme wins over the plugin entirely.
 `ArticleController` looks for these first:
 
 ```
@@ -85,8 +130,24 @@ For the index and detail pages, the active theme wins over the plugin entirely.
 ```
 
 If your theme provides them, the plugin's own `articles/index` and
-`articles/show` are never used. This is the right level for a site whose article
-pages have a fundamentally different layout rather than different styling.
+`articles/show` are never used. This is the right level when your article pages
+have a fundamentally different layout rather than different styling.
+
+You can also pick a specific theme template per site under **Templates** on the
+settings page. Leave it empty and nothing changes — the plugin falls back to the
+theme's `articles-index` / `articles-show`, then to its own views.
+
+A chosen template receives a page-shaped object, so a generic theme page
+template can render articles:
+
+```blade
+$templateSettings = $page->template_settings ?? [];
+$ctaTitle = data_get($templateSettings, "cta.{$locale}.title");
+```
+
+`template_settings` is per-template configuration you edit in the admin,
+including a localised CTA. Templates that render articles as a block also
+receive `$pageBlocks` and `$contentStudioContentView`.
 
 ### 3. Model accessors
 
@@ -103,30 +164,25 @@ raw Engine column names, so your views survive schema changes upstream:
 @endif
 ```
 
-### A note on the view namespace
-
-The Composer package is `shazzoo/content-studio-core-engine-plugin`, but the
-plugin **slug stays `content-studio-plugin`**, so views and components resolve as
-`content-studio-plugin::…` exactly as they did when the plugin was a directory
-under `app/Plugins/`. That keeps existing themes working when a site switches
-from the directory copy to this package.
-
-Do not change the slug without updating every `content-studio-plugin::` view
-reference and `<x-content-studio-plugin::…>` tag in every theme that uses it.
-
-### How resolution works
+### How view resolution works
 
 Core registers the site override directory ahead of the package's own views, so
 the finder picks the first path that has the file:
 
 ```
-1. resources/views/vendor/content-studio-plugin/   ← your overrides
-2. vendor/shazzoo/content-studio-core-engine-plugin/resources/views/   ← package defaults
+1. resources/views/vendor/content-studio-plugin/                      ← your overrides
+2. vendor/shazzoo/content-studio-core-engine-plugin/resources/views/  ← package defaults
 ```
 
-Resolution is per file, not all-or-nothing. This requires core ≥ 0.1.6; before
-that the package path shadowed the override directory and publishing had no
-effect.
+Resolution is per file, not all-or-nothing.
+
+### A note on the view namespace
+
+The package is `shazzoo/content-studio-core-engine-plugin`, but the plugin slug
+is **`content-studio-plugin`**, so views and components resolve as
+`content-studio-plugin::…`. Do not change the slug without updating every
+`content-studio-plugin::` reference and `<x-content-studio-plugin::…>` tag in
+every theme that uses it.
 
 ## Other publishable tags
 
@@ -137,18 +193,6 @@ php artisan vendor:publish --tag=content-studio-config
 ```bash
 php artisan vendor:publish --tag=content-studio-lang
 ```
-
-Config controls the Engine API URL, which also reads
-`CONTENT_STUDIO_ENGINE_API_URL` from `.env`.
-
-## Syncing articles
-
-```bash
-php artisan content-studio:articles
-```
-
-Registered to run daily. The plugin confirms publication back to the Engine, so
-a synced article drops out of the pending list.
 
 ## Multilingual sites
 
@@ -163,6 +207,12 @@ use Shazzoo\ContentStudio\Support\ArticleRoutes;
 ArticleRoutes::indexPath($locale);
 ArticleRoutes::articleUrl($slug, $locale);
 ```
+
+## Migrations
+
+Every migration checks the state it changes before touching it, so the package
+installs cleanly on a site that already has these tables and columns from an
+earlier copy of the plugin, even when that copy named a migration differently.
 
 ## Development
 
