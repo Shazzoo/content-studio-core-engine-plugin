@@ -3,7 +3,6 @@
   "slug": "content-studio-plugin",
   "name": "Content Studio",
   "description": "Blog articles generated and synced from the Content Studio engine.",
-  "version": "2.0.0",
   "author": "Shazzoo",
   "provider": "Shazzoo\\ContentStudio\\PluginServiceProvider",
   "class": "Shazzoo\\ContentStudio\\Plugin"
