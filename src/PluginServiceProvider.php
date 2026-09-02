@@ -4,7 +4,6 @@ namespace Shazzoo\ContentStudio;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -23,12 +22,10 @@ class PluginServiceProvider extends ServiceProvider
     {
         require_once __DIR__.'/Support/helpers.php';
         $this->mergeConfigFrom(dirname(__DIR__).'/config/content-studio.php', 'content-studio');
-        Log::info('Registering Content Studio plugin');
     }
 
     public function boot(SitemapRegistry $registry, PluginRouteRegistry $pluginRouteRegistry): void
     {
-        Log::info('Booting Content Studio plugin');
         $base = dirname(__DIR__);
 
         $routePrefix = 'blog';
