@@ -1,0 +1,127 @@
+<?php
+
+namespace Shazzoo\ContentStudio;
+
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Shazzoo\ContentStudio\Console\Commands\ContentStudioArticleSync;
+use Shazzoo\ContentStudio\Http\Controllers\ArticleController;
+use Shazzoo\ContentStudio\Models\ContentStudioSetting;
+use Shazzoo\ContentStudio\Sitemap\SitemapGenerator;
+use Shazzoo\ContentStudio\Views\Components\Blocks\ContentStudioArticles;
+use Shazzoo\ContentStudioCore\Support\Blocks\BlockDefinitionNamespaceRegistry;
+use Shazzoo\ContentStudioCore\Support\Routing\PluginRouteRegistry;
+use Shazzoo\ContentStudioCore\Support\Sitemap\SitemapRegistry;
+
+class PluginServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        require_once __DIR__.'/Support/helpers.php';
+        $this->mergeConfigFrom(dirname(__DIR__).'/config/content-studio.php', 'content-studio');
+        Log::info('Registering Content Studio plugin');
+    }
+
+    public function boot(SitemapRegistry $registry, PluginRouteRegistry $pluginRouteRegistry): void
+    {
+        Log::info('Booting Content Studio plugin');
+        $base = dirname(__DIR__);
+
+        $routePrefix = 'blog';
+        if (Schema::hasTable('content_studio_settings')) {
+            $settings = ContentStudioSetting::query()->first();
+            $configuredPrefix = trim((string) ($settings?->route_prefix ?? 'blog'), '/');
+            if ($configuredPrefix !== '') {
+                $routePrefix = $configuredPrefix;
+            }
+        }
+
+        $pluginRouteRegistry->register($routePrefix, ArticleController::class);
+
+        Route::middleware('web')->group(function () use ($routePrefix) {
+            $this->registerArticleRoutes($routePrefix, 'blog');
+
+            if ($routePrefix !== 'blog') {
+                $this->registerArticleRoutes('blog', 'blog.alias');
+            }
+        });
+
+        // migrations
+        $this->loadMigrationsFrom($base.'/database/migrations');
+
+        // views
+        $this->loadViewsFrom($base.'/resources/views', 'content-studio-plugin');
+
+        // TRANSLATIONS.
+        $this->loadTranslationsFrom($base.'/resources/lang', 'content-studio-plugin');
+
+        // OVERRIDES.
+        // Elke site heeft zijn eigen vormgeving. Publiceer de views die je wilt
+        // herstylen en pas ze aan in resources/views/vendor/content-studio-plugin;
+        // views die je niet publiceert blijven uit de package komen, zodat een
+        // update van de plugin gewoon doorwerkt.
+        $this->publishes([
+            $base.'/resources/views' => resource_path('views/vendor/content-studio-plugin'),
+        ], 'content-studio-views');
+
+        $this->publishes([
+            $base.'/resources/views/components' => resource_path('views/vendor/content-studio-plugin/components'),
+        ], 'content-studio-components');
+
+        $this->publishes([
+            $base.'/resources/lang' => lang_path('vendor/content-studio-plugin'),
+        ], 'content-studio-lang');
+
+        $this->publishes([
+            $base.'/config/content-studio.php' => config_path('content-studio.php'),
+        ], 'content-studio-config');
+
+        // SITEMAP.
+        $registry->register(SitemapGenerator::class);
+
+        $this->commands([
+            ContentStudioArticleSync::class,
+        ]);
+
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('content-studio:articles')
+                ->daily()
+                ->withoutOverlapping(); // alleen nuttig als je meerdere servers hebt
+        });
+
+        // COMPONENT NAMESPACE.
+        Blade::componentNamespace(
+            'Shazzoo\\ContentStudio\\Views\\Components',
+            'content-studio-plugin'
+        );
+
+        // Legacy alias: older saved blocks used type "content-studio-articles"
+        // which resolves to "blocks.content-studio-articles" in the renderer.
+        Blade::component('blocks.content-studio-articles', ContentStudioArticles::class);
+
+        app(BlockDefinitionNamespaceRegistry::class)->addMany([
+            'Shazzoo\\ContentStudio\\Forms\\Blocks',
+        ]);
+    }
+
+    private function registerArticleRoutes(string $routePrefix, string $namePrefix): void
+    {
+        Route::get('/'.$routePrefix, [ArticleController::class, 'index'])->name($namePrefix.'.index');
+        Route::get('/'.$routePrefix.'/{slug}', function (string $slug) {
+            return app(ArticleController::class)->show(null, $slug);
+        })->name($namePrefix.'.show');
+
+        if (function_exists('cms_is_multilang') && cms_is_multilang()) {
+            Route::get('/{locale}/'.$routePrefix, [ArticleController::class, 'index'])
+                ->where('locale', '[a-zA-Z]{2}(?:-[a-zA-Z]{2})?')
+                ->name('locale.'.$namePrefix.'.index');
+            Route::get('/{locale}/'.$routePrefix.'/{slug}', [ArticleController::class, 'show'])
+                ->where('locale', '[a-zA-Z]{2}(?:-[a-zA-Z]{2})?')
+                ->name('locale.'.$namePrefix.'.show');
+        }
+    }
+}

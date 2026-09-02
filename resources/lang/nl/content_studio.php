@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'articles' => 'Artikelen',
+    'blog_eyebrow' => 'Insights',
+    'blog_description' => 'Lees praktische artikelen over contentstrategie, AI-workflows en digitale groei.',
+    'all_articles' => 'Alle artikelen',
+    'read_more' => 'Lees meer',
+    'pillar_content' => 'Pillar content',
+    'contains_deep_dive_articles' => 'Bevat :count verdiepende artikelen',
+    'view_full_guide' => 'Bekijk volledige gids',
+    'reading_time' => ':minutes min leestijd',
+    'next_article' => 'Volgend artikel',
+    'previous_article' => 'Vorig artikel',
+    'no_previous_article' => 'Geen vorig artikel',
+    'no_next_article' => 'Geen volgend artikel',
+    'table_of_contents' => 'Inhoudsopgave',
+    'expert_review' => 'Expert review',
+    'updated_on_by_team' => 'Geactualiseerd op :date',
+    'cluster_overview' => 'Cluster overzicht',
+    'dive_into_details' => 'Duik in de details met onze gespecialiseerde artikelen over dit onderwerp.',
+    'no_articles_available' => 'Nog geen artikelen beschikbaar.',
+    'items' => 'Items',
+    'editor' => 'Editor',
+    'revisions' => 'Revisies',
+    'select_item_for_editor' => 'Selecteer eerst een item in de Items-tab, of maak een nieuw item met New item.',
+    'select_item_for_revisions' => 'Selecteer eerst een item om revisies te bekijken.',
+];

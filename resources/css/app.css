@@ -1,0 +1,49 @@
+@config "../../tailwind.config.js";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #f28a2a;
+  --primary2: #ffb26a;
+  --secondary: #2e2e2d;
+  --secondary2: #595956;
+  --tertiary: #aad2ed;
+  --tertiary2: #d7ecf9;
+
+  --shadow-primary: 0 10px 22px rgba(242, 138, 42, 0.26);
+  --shadow-secondary: 0 10px 22px rgba(45, 13, 41, 0.26);
+  --shadow-tertiary: 0 10px 22px rgba(170, 210, 237, 0.26);
+}
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary2: var(--primary2);
+  --color-secondary: var(--secondary);
+  --color-secondary2: var(--secondary2);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary2: var(--tertiary2);
+
+  --shadow-primary: var(--shadow-primary);
+  --shadow-secondary: var(--shadow-secondary);
+  --shadow-tertiary: var(--shadow-tertiary);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  .bg-splatter {
+    background-image: var(--splatter);
+    background-repeat: repeat;
+    background-size: 1125px 750px;
+  }
+}

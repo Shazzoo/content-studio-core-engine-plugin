@@ -1,0 +1,26 @@
+{
+  "name": "shazzoo/content-studio-core-engine-plugin",
+  "description": "Content Studio Engine plugin for Content Studio Core: blog articles generated and synced from the Content Studio Engine.",
+  "type": "content-studio-plugin",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.3",
+    "shazzoo/content-studio-core": "^0.1.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shazzoo\\ContentStudio\\": "src/"
+    }
+  },
+  "extra": {
+    "content-studio": {
+      "key": "shazzoo/content-studio-core-engine-plugin",
+      "slug": "content-studio-plugin",
+      "name": "Content Studio",
+      "description": "Blog articles generated and synced from the Content Studio engine.",
+      "provider": "Shazzoo\\ContentStudio\\PluginServiceProvider"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

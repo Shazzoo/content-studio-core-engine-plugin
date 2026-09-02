@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'articles' => 'Articles',
+    'blog_eyebrow' => 'Insights',
+    'blog_description' => 'Read practical articles about content strategy, AI workflows, and digital growth.',
+    'all_articles' => 'All articles',
+    'read_more' => 'Read more',
+    'pillar_content' => 'Pillar content',
+    'contains_deep_dive_articles' => 'Contains :count deep-dive articles',
+    'view_full_guide' => 'View full guide',
+    'reading_time' => ':minutes min read',
+    'next_article' => 'Next article',
+    'previous_article' => 'Previous article',
+    'no_previous_article' => 'No previous article',
+    'no_next_article' => 'No next article',
+    'table_of_contents' => 'Table of contents',
+    'expert_review' => 'Expert review',
+    'updated_on_by_team' => 'Updated on :date',
+    'cluster_overview' => 'Cluster overview',
+    'dive_into_details' => 'Dive into the details with our specialized articles on this topic.',
+    'no_articles_available' => 'No articles available yet.',
+    'items' => 'Items',
+    'editor' => 'Editor',
+    'revisions' => 'Revisions',
+    'select_item_for_editor' => 'Select an item in the Items tab first, or create a new item with New item.',
+    'select_item_for_revisions' => 'Select an item first to view revisions.',
+];
