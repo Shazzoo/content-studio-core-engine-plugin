@@ -27,7 +27,7 @@ site needs its own copy.
 ## Requirements
 
 - PHP 8.3+
-- `shazzoo/content-studio-core` ^0.1.6
+- `shazzoo/content-studio-core` ^1.0
 
 ## Install
 
