@@ -25,6 +25,8 @@
     </div>
 
     <div>
+        @include('content-studio-plugin::partials.article-styles')
+
         <div class="article-body max-w-none">
             {!! $article->body_html !!}
         </div>

@@ -77,6 +77,8 @@
             </aside>
 
             <section class="lg:w-3/4">
+                @include('content-studio-plugin::partials.article-styles')
+
                 <section class="article-body max-w-none">
                     {!! $processedBody !!}
                 </section>
