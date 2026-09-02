@@ -58,7 +58,7 @@ class SyncArticles
             'errors' => [],
         ];
 
-        $this->processResults($api_key, $url_next, $stats);
+        $this->processResults($api_key, $url_next, $api_url, $stats);
 
         $stats['expected'] = ProjectInfo::syncableTotal();
 
@@ -83,12 +83,13 @@ class SyncArticles
         return $stats;
     }
 
-    private function processResults($api_key, $url_next, array &$stats)
+    private function processResults($api_key, $url_next, string $api_url, array &$stats)
     {
         $stats['pages']++;
+        $requestUrl = $this->normalizeEngineUrl($url_next, $api_url);
 
         Log::info('[ContentStudio] Start synchroniseren met Content Studio Engine', [
-            'project_code' => $url_next,
+            'project_code' => $requestUrl,
         ]);
         // PERFORM THE REQUEST TO CONTENT STUDIO ENGINE.
         try {
@@ -96,12 +97,12 @@ class SyncArticles
                 'Authorization' => 'Bearer '.$api_key,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-            ])->timeout(20)->get($url_next);
+            ])->timeout(20)->get($requestUrl);
         } catch (\Throwable $e) {
             $error = [
                 'status' => 'connection_error',
                 'response' => $e->getMessage(),
-                'url' => $url_next,
+                'url' => $requestUrl,
             ];
 
             Log::error('[ContentStudio] Fout bij synchroniseren met Content Studio Engine', $error);
@@ -118,7 +119,7 @@ class SyncArticles
             $error = [
                 'status' => $response->status(),
                 'response' => $response->body(),
-                'url' => $url_next,
+                'url' => $requestUrl,
             ];
 
             Log::error('[ContentStudio] Fout bij synchroniseren met Content Studio Engine', [
@@ -147,8 +148,17 @@ class SyncArticles
 
         if ($url_next) {
             // Recursief de volgende pagina ophalen
-            $this->processResults($api_key, $url_next, $stats);
+            $this->processResults($api_key, $url_next, $api_url, $stats);
         }
+    }
+
+    private function normalizeEngineUrl(string $url, string $api_url): string
+    {
+        if (Str::startsWith($url, ['http://', 'https://'])) {
+            return $url;
+        }
+
+        return rtrim($api_url, '/').'/'.ltrim($url, '/');
     }
 
     private function shouldSync($item): bool
