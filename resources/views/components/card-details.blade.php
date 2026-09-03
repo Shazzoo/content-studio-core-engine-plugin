@@ -21,7 +21,7 @@
 
     <div class="mb-10">
         <img src="{{ $image_url }}" alt="{{ $article->featured_image_alt }}"
-            class="h-[450px] w-full rounded-lg border border-line bg-bg-alt object-cover shadow-sm">
+            class="aspect-[16/9] w-full rounded-lg border border-line bg-bg-alt object-cover shadow-sm">
     </div>
 
     <div>
