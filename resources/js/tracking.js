@@ -16,9 +16,11 @@
         return;
     }
 
-    var endpoint = config.getAttribute('data-endpoint');
+    var endpoint = config.getAttribute('data-endpoint') || '';
 
-    if (!endpoint) {
+    // Alleen een absolute URL naar de engine; een relatieve waarde zou het
+    // event naar de site zelf posten.
+    if (!/^https?:\/\//i.test(endpoint)) {
         return;
     }
 
