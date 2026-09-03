@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Shazzoo\StrategyEngine\Console\Commands\ContentStudioArticleSync;
 use Shazzoo\StrategyEngine\Http\Controllers\ArticleController;
+use Shazzoo\StrategyEngine\Http\Controllers\TrackingScriptController;
 use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
 use Shazzoo\StrategyEngine\Sitemap\SitemapGenerator;
 use Shazzoo\StrategyEngine\Views\Components\Blocks\ContentStudioArticles;
@@ -38,6 +39,10 @@ class PluginServiceProvider extends ServiceProvider
         }
 
         $pluginRouteRegistry->register($routePrefix, ArticleController::class);
+
+        Route::middleware('web')
+            ->get('/strategy-engine/tracking.js', TrackingScriptController::class)
+            ->name('content-studio.tracking-script');
 
         Route::middleware('web')->group(function () use ($routePrefix) {
             $this->registerArticleRoutes($routePrefix, 'blog');
