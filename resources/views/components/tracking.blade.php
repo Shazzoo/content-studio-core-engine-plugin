@@ -9,5 +9,5 @@
         data-project-key="{{ $setting?->cs_project_code }}"
         data-content-id="{{ $article?->content_studio_article_id }}" data-article-slug="{{ $article?->slug }}"></div>
 
-    <script src="{{ route('content-studio.tracking-script') }}" defer></script>
+    <script src="{{ Tracking::scriptUrl() }}" defer></script>
 @endif

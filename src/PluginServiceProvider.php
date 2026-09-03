@@ -85,6 +85,12 @@ class PluginServiceProvider extends ServiceProvider
             $base.'/config/content-studio.php' => config_path('content-studio.php'),
         ], 'content-studio-config');
 
+        // Het tracking script als echt bestand in public/, zodat de webserver
+        // het direct serveert. De route hieronder blijft de fallback.
+        $this->publishes([
+            $base.'/resources/js/tracking.js' => public_path(\Shazzoo\StrategyEngine\Support\Tracking::PUBLIC_PATH),
+        ], 'content-studio-public');
+
         // SITEMAP.
         $registry->register(SitemapGenerator::class);
 
