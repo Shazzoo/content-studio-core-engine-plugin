@@ -15,10 +15,12 @@
     $hub_url = url(rtrim($blogBasePath, '/') . '/' . ltrim((string) $article->slug, '/'));
 @endphp
 
+@include('strategy-engine::partials.article-styles')
+
 <div class="col-span-full my-8 flex flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-sm lg:flex-row">
-    <div class="h-64 overflow-hidden lg:h-auto lg:w-4/5">
+    <div class="overflow-hidden lg:w-4/5">
         <img src="{{ $image_url }}" alt="{{ $article->featured_image_alt }}"
-            class="h-full w-full bg-bg-alt object-cover">
+            class="cs-featured-image bg-bg-alt">
     </div>
     <div class="flex flex-col justify-between p-8 md:p-10">
         <div>

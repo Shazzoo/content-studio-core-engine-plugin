@@ -17,6 +17,8 @@
     $url = url(rtrim($blogBasePath, '/') . '/' . ltrim((string) $article->slug, '/'));
 @endphp
 
+@include('strategy-engine::partials.article-styles')
+
 <article class="group h-full">
     @if ($clickable)
         <a href="{{ $url }}" class="block h-full">
@@ -25,7 +27,7 @@
     <div class="flex h-full flex-col">
         <div class="mb-4 overflow-hidden rounded-lg border border-line bg-surface shadow-sm">
             <img src="{{ $image_url }}" alt="{{ $article->featured_image_alt }}"
-                class="h-60 w-full object-cover transition duration-500 group-hover:scale-105">
+                class="cs-featured-image transition duration-500 group-hover:scale-105">
         </div>
 
         <div class="flex-1">

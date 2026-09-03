@@ -14,6 +14,7 @@
            Staat hier zodat het werkt zonder dat de site de plugin in zijn
            Tailwind-config hoeft op te nemen. */
         .cs-featured-image {
+            display: block;
             width: 100%;
             aspect-ratio: 16 / 9;
             object-fit: cover;
