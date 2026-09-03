@@ -41,7 +41,10 @@ class PluginServiceProvider extends ServiceProvider
         $pluginRouteRegistry->register($routePrefix, ArticleController::class);
 
         Route::middleware('web')
-            ->get('/strategy-engine/tracking.js', TrackingScriptController::class)
+            // Let op: het pad moet onder een prefix vallen die de catch-all
+            // frontend-route van content-studio-core uitsluit ("js/"), anders
+            // slokt die route dit verzoek op en volgt er een 404.
+            ->get('/js/strategy-engine/tracking.js', TrackingScriptController::class)
             ->name('content-studio.tracking-script');
 
         Route::middleware('web')->group(function () use ($routePrefix) {
