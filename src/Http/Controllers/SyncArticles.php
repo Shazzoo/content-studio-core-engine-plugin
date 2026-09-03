@@ -27,7 +27,7 @@ class SyncArticles
 
         if (! $api_key || ! $project_code) {
             $message = 'Missing Content Studio credentials (cs_api_key and/or cs_project_code).';
-            Log::error('[ContentStudio] '.$message);
+            Log::error('[StrategyEngine] '.$message);
 
             return [
                 'ok' => false,
@@ -73,7 +73,7 @@ class SyncArticles
             $stats['ok'] = false;
             $stats['message'] = 'Synchronisatie afgerond, maar '.($stats['expected'] - $processed).' van de '.$stats['expected'].' artikelen zijn niet verwerkt.';
 
-            Log::warning('[ContentStudio] Minder artikelen verwerkt dan de Engine aanbiedt', [
+            Log::warning('[StrategyEngine] Minder artikelen verwerkt dan de Engine aanbiedt', [
                 'expected' => $stats['expected'],
                 'synced' => $stats['synced'],
                 'skipped' => $stats['skipped'],
@@ -88,7 +88,7 @@ class SyncArticles
         $stats['pages']++;
         $requestUrl = $this->normalizeEngineUrl($url_next, $api_url);
 
-        Log::info('[ContentStudio] Start synchroniseren met Content Studio Engine', [
+        Log::info('[StrategyEngine] Start synchroniseren met Content Studio Engine', [
             'project_code' => $requestUrl,
         ]);
         // PERFORM THE REQUEST TO CONTENT STUDIO ENGINE.
@@ -105,7 +105,7 @@ class SyncArticles
                 'url' => $requestUrl,
             ];
 
-            Log::error('[ContentStudio] Fout bij synchroniseren met Content Studio Engine', $error);
+            Log::error('[StrategyEngine] Fout bij synchroniseren met Content Studio Engine', $error);
             $stats['errors'][] = $error;
 
             return;
@@ -122,7 +122,7 @@ class SyncArticles
                 'url' => $requestUrl,
             ];
 
-            Log::error('[ContentStudio] Fout bij synchroniseren met Content Studio Engine', [
+            Log::error('[StrategyEngine] Fout bij synchroniseren met Content Studio Engine', [
                 'status' => $error['status'],
                 'response' => $error['response'],
                 'url' => $error['url'],
@@ -166,7 +166,7 @@ class SyncArticles
         $status = strtolower(trim((string) ($item['status'] ?? '')));
 
         if ($status === '') {
-            Log::warning('[ContentStudio] Artikel zonder status overgeslagen', [
+            Log::warning('[StrategyEngine] Artikel zonder status overgeslagen', [
                 'content_studio_article_id' => $item['id'] ?? null,
             ]);
 
@@ -239,9 +239,9 @@ class SyncArticles
             // STORE THE IMAGE.
             // CHECK IF IMAGE PATH IS CORRECT.
             if ($featured_image_url && filter_var($featured_image_url, FILTER_VALIDATE_URL)) {
-                Log::info('[ContentStudio] Valid featured image URL: '.$featured_image_url);
+                Log::info('[StrategyEngine] Valid featured image URL: '.$featured_image_url);
             } else {
-                Log::warning('[ContentStudio] Invalid featured image URL: '.$featured_image_url);
+                Log::warning('[StrategyEngine] Invalid featured image URL: '.$featured_image_url);
                 $featured_image_url = null; // Set to null if invalid
             }
             if ($featured_image_url) {
@@ -292,7 +292,7 @@ class SyncArticles
             return true;
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('[ContentStudio] Fout bij verwerken artikel: '.$e->getLine().' ('.$e->getMessage().')', [
+            Log::error('[StrategyEngine] Fout bij verwerken artikel: '.$e->getLine().' ('.$e->getMessage().')', [
                 'item' => $item,
                 'error' => $e->getMessage(),
             ]);
@@ -304,7 +304,7 @@ class SyncArticles
     private function storeDiagramImage(string $imageUrl, mixed $contentId, ?string $placeholderId): string
     {
         if (! filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-            Log::warning('[ContentStudio] Invalid diagram image URL: '.$imageUrl);
+            Log::warning('[StrategyEngine] Invalid diagram image URL: '.$imageUrl);
 
             return $imageUrl;
         }
@@ -312,7 +312,7 @@ class SyncArticles
         try {
             $response = Http::timeout(20)->get($imageUrl);
         } catch (\Throwable $e) {
-            Log::warning('[ContentStudio] Diagram image download failed', [
+            Log::warning('[StrategyEngine] Diagram image download failed', [
                 'url' => $imageUrl,
                 'error' => $e->getMessage(),
             ]);
@@ -321,7 +321,7 @@ class SyncArticles
         }
 
         if ($response->failed()) {
-            Log::warning('[ContentStudio] Diagram image download returned an error', [
+            Log::warning('[StrategyEngine] Diagram image download returned an error', [
                 'url' => $imageUrl,
                 'status' => $response->status(),
             ]);

@@ -11,8 +11,8 @@ final class ContentStudioArticlesBlockDefinition
     public static function definition(): BlockDefinition
     {
         return BlockDefinition::make('shazzoo/content-studio.content-studio-articles')
-            ->label('Content Studio Articles')
-            ->description('Show recent Content Studio articles inside any page.')
+            ->label('Strategy Engine Articles')
+            ->description('Show recent Strategy Engine articles inside any page.')
             ->group('Plugins')
             ->icon('heroicon-o-newspaper')
             ->schema([

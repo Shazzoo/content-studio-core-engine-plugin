@@ -109,13 +109,13 @@ class ProjectInfo
                 'Accept' => 'application/json',
             ])->timeout(10)->get($url);
         } catch (\Throwable $e) {
-            Log::warning('[ContentStudio] Kon projectgegevens niet ophalen: '.$e->getMessage(), ['url' => $url]);
+            Log::warning('[StrategyEngine] Kon projectgegevens niet ophalen: '.$e->getMessage(), ['url' => $url]);
 
             return null;
         }
 
         if ($response->failed()) {
-            Log::warning('[ContentStudio] Kon projectgegevens niet ophalen', [
+            Log::warning('[StrategyEngine] Kon projectgegevens niet ophalen', [
                 'status' => $response->status(),
                 'url' => $url,
             ]);

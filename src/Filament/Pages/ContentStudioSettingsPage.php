@@ -23,7 +23,7 @@ class ContentStudioSettingsPage extends Page
 {
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-sparkles';
 
-    protected static ?string $navigationLabel = 'Content Studio Settings';
+    protected static ?string $navigationLabel = 'Strategy Engine Settings';
 
     protected static string|\UnitEnum|null $navigationGroup = 'Plugins';
 
@@ -43,7 +43,7 @@ class ContentStudioSettingsPage extends Page
     {
         return $form
             ->schema([
-                Section::make('Content Studio')
+                Section::make('Strategy Engine')
                     ->columns(2)
                     ->schema([
                         TextInput::make('cs_api_key')
@@ -67,7 +67,7 @@ class ContentStudioSettingsPage extends Page
                             ->minValue(1)
                             ->maxValue(24)
                             ->required()
-                            ->helperText('Aantal artikelen dat het Content Studio block op pagina\'s toont.'),
+                            ->helperText('Aantal artikelen dat het Strategy Engine block op pagina\'s toont.'),
                         TextInput::make('articles_per_page')
                             ->label('Articles per page')
                             ->numeric()
@@ -151,7 +151,7 @@ class ContentStudioSettingsPage extends Page
         $model->save();
 
         Notification::make()
-            ->title('Content Studio instellingen opgeslagen')
+            ->title('Strategy Engine instellingen opgeslagen')
             ->success()
             ->send();
     }

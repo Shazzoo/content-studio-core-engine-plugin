@@ -1,7 +1,7 @@
 {
   "key": "shazzoo/strategy-engine-plugin",
   "slug": "strategy-engine",
-  "name": "Content Studio",
+  "name": "Strategy Engine",
   "description": "Blog articles generated and synced from the Content Studio engine.",
   "author": "Shazzoo",
   "provider": "Shazzoo\\StrategyEngine\\PluginServiceProvider",

@@ -20,7 +20,7 @@ class ConfirmPublished
         try {
             return $this->confirm($article);
         } catch (\Throwable $e) {
-            Log::warning('[ContentStudio] Kon publicatie niet bevestigen bij Content Studio Engine: '.$e->getMessage(), [
+            Log::warning('[StrategyEngine] Kon publicatie niet bevestigen bij Content Studio Engine: '.$e->getMessage(), [
                 'article_id' => $article->id,
                 'content_studio_article_id' => $article->content_studio_article_id,
             ]);
@@ -66,7 +66,7 @@ class ConfirmPublished
                 'Content-Type' => 'application/json',
             ])->timeout(10)->post($url, $payload);
         } catch (\Throwable $e) {
-            Log::warning('[ContentStudio] Fout bij bevestigen publicatie bij Content Studio Engine', [
+            Log::warning('[StrategyEngine] Fout bij bevestigen publicatie bij Content Studio Engine', [
                 'status' => 'connection_error',
                 'response' => $e->getMessage(),
                 'url' => $url,
@@ -76,7 +76,7 @@ class ConfirmPublished
         }
 
         if ($response->failed()) {
-            Log::warning('[ContentStudio] Fout bij bevestigen publicatie bij Content Studio Engine', [
+            Log::warning('[StrategyEngine] Fout bij bevestigen publicatie bij Content Studio Engine', [
                 'status' => $response->status(),
                 'response' => $response->body(),
                 'url' => $url,
@@ -90,7 +90,7 @@ class ConfirmPublished
             'published_confirmed_at' => now(),
         ])->save();
 
-        Log::info('[ContentStudio] Publicatie bevestigd bij Content Studio Engine', [
+        Log::info('[StrategyEngine] Publicatie bevestigd bij Content Studio Engine', [
             'content_studio_article_id' => $content_id,
             'published_url' => $published_url,
         ]);
