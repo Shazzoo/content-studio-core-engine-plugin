@@ -1,6 +1,6 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Support;
+namespace Shazzoo\StrategyEngine\Support;
 
 final class ArticleDiagramPlaceholders
 {

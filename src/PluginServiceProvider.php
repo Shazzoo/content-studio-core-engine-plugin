@@ -1,17 +1,17 @@
 <?php
 
-namespace Shazzoo\ContentStudio;
+namespace Shazzoo\StrategyEngine;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Shazzoo\ContentStudio\Console\Commands\ContentStudioArticleSync;
-use Shazzoo\ContentStudio\Http\Controllers\ArticleController;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Sitemap\SitemapGenerator;
-use Shazzoo\ContentStudio\Views\Components\Blocks\ContentStudioArticles;
+use Shazzoo\StrategyEngine\Console\Commands\ContentStudioArticleSync;
+use Shazzoo\StrategyEngine\Http\Controllers\ArticleController;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Sitemap\SitemapGenerator;
+use Shazzoo\StrategyEngine\Views\Components\Blocks\ContentStudioArticles;
 use Shazzoo\ContentStudioCore\Support\Blocks\BlockDefinitionNamespaceRegistry;
 use Shazzoo\ContentStudioCore\Support\Routing\PluginRouteRegistry;
 use Shazzoo\ContentStudioCore\Support\Sitemap\SitemapRegistry;
@@ -51,26 +51,26 @@ class PluginServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom($base.'/database/migrations');
 
         // views
-        $this->loadViewsFrom($base.'/resources/views', 'content-studio-plugin');
+        $this->loadViewsFrom($base.'/resources/views', 'strategy-engine');
 
         // TRANSLATIONS.
-        $this->loadTranslationsFrom($base.'/resources/lang', 'content-studio-plugin');
+        $this->loadTranslationsFrom($base.'/resources/lang', 'strategy-engine');
 
         // OVERRIDES.
         // Elke site heeft zijn eigen vormgeving. Publiceer de views die je wilt
-        // herstylen en pas ze aan in resources/views/vendor/content-studio-plugin;
+        // herstylen en pas ze aan in resources/views/vendor/strategy-engine;
         // views die je niet publiceert blijven uit de package komen, zodat een
         // update van de plugin gewoon doorwerkt.
         $this->publishes([
-            $base.'/resources/views' => resource_path('views/vendor/content-studio-plugin'),
+            $base.'/resources/views' => resource_path('views/vendor/strategy-engine'),
         ], 'content-studio-views');
 
         $this->publishes([
-            $base.'/resources/views/components' => resource_path('views/vendor/content-studio-plugin/components'),
+            $base.'/resources/views/components' => resource_path('views/vendor/strategy-engine/components'),
         ], 'content-studio-components');
 
         $this->publishes([
-            $base.'/resources/lang' => lang_path('vendor/content-studio-plugin'),
+            $base.'/resources/lang' => lang_path('vendor/strategy-engine'),
         ], 'content-studio-lang');
 
         $this->publishes([
@@ -92,8 +92,8 @@ class PluginServiceProvider extends ServiceProvider
 
         // COMPONENT NAMESPACE.
         Blade::componentNamespace(
-            'Shazzoo\\ContentStudio\\Views\\Components',
-            'content-studio-plugin'
+            'Shazzoo\\StrategyEngine\\Views\\Components',
+            'strategy-engine'
         );
 
         // Legacy alias: older saved blocks used type "content-studio-articles"
@@ -101,7 +101,7 @@ class PluginServiceProvider extends ServiceProvider
         Blade::component('blocks.content-studio-articles', ContentStudioArticles::class);
 
         app(BlockDefinitionNamespaceRegistry::class)->addMany([
-            'Shazzoo\\ContentStudio\\Forms\\Blocks',
+            'Shazzoo\\StrategyEngine\\Forms\\Blocks',
         ]);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Views\Components\Blocks;
+namespace Shazzoo\StrategyEngine\Views\Components\Blocks;
 
 use Illuminate\View\Component;
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Support\ArticleRoutes;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Support\ArticleRoutes;
 
 class ContentStudioArticles extends Component
 {
@@ -28,7 +28,7 @@ class ContentStudioArticles extends Component
             ->limit($limit)
             ->get();
 
-        return view('content-studio-plugin::components.blocks.article-listing', [
+        return view('strategy-engine::components.blocks.article-listing', [
             'title' => (string) ($this->data['title'] ?? 'Latest Articles'),
             'showExcerpt' => (bool) ($this->data['show_excerpt'] ?? true),
             'articles' => $articles,

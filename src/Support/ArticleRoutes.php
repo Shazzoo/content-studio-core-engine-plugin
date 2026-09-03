@@ -1,8 +1,8 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Support;
+namespace Shazzoo\StrategyEngine\Support;
 
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
 
 final class ArticleRoutes
 {

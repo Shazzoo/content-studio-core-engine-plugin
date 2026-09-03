@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Shazzoo\ContentStudio\Http\Controllers\ArticleController;
+use Shazzoo\StrategyEngine\Http\Controllers\ArticleController;
 
 // -------------------------------
 // Frontend Routes (met caching)

@@ -1,11 +1,11 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Views\Components\Blocks;
+namespace Shazzoo\StrategyEngine\Views\Components\Blocks;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
 
 class ArticleOverview extends Component
 {
@@ -20,8 +20,8 @@ class ArticleOverview extends Component
         $perPage = max(1, min(48, (int) ($setting->articles_per_page ?: 12)));
         $locale = app()->getLocale();
 
-        return view('content-studio-plugin::components.blocks.article-overview', [
-            'title' => (string) ($this->data['title'] ?? __('content-studio-plugin::content_studio.articles')),
+        return view('strategy-engine::components.blocks.article-overview', [
+            'title' => (string) ($this->data['title'] ?? __('strategy-engine::content_studio.articles')),
             'articles' => ContentStudioArticle::query()
                 ->where('locale', $locale)
                 ->whereNotNull('slug')

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mx-auto w-full max-w-[1280px] px-5 py-12 md:px-8">
-        @include('content-studio-plugin::components.blocks.article-body', [
+        @include('strategy-engine::components.blocks.article-body', [
             'article' => $article,
             'setting' => $setting,
         ])

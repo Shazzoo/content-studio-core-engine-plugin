@@ -1,10 +1,10 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Sitemap;
+namespace Shazzoo\StrategyEngine\Sitemap;
 
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Support\ArticleRoutes;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Support\ArticleRoutes;
 use Shazzoo\ContentStudioCore\Support\Sitemap\Contracts\SitemapGeneratorInterface;
 use Shazzoo\ContentStudioCore\Support\Sitemap\SitemapBuilder;
 

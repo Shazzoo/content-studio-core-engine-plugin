@@ -1,6 +1,6 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Filament\Pages;
+namespace Shazzoo\StrategyEngine\Filament\Pages;
 
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -12,8 +12,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Artisan;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Support\Engine\ProjectInfo;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Support\Engine\ProjectInfo;
 use Shazzoo\ContentStudioCore\Support\Blocks\Adapters\FilamentFieldAdapter;
 use Shazzoo\ContentStudioCore\Support\Templates\TemplateSettingsDefinition;
 use Shazzoo\ContentStudioCore\Support\Theming\TemplateDefinitionRegistry;
@@ -29,7 +29,7 @@ class ContentStudioSettingsPage extends Page
 
     protected static ?int $navigationSort = 250;
 
-    protected string $view = 'content-studio-plugin::filament.pages.content-studio-settings';
+    protected string $view = 'strategy-engine::filament.pages.content-studio-settings';
 
     public ?array $data = [];
 

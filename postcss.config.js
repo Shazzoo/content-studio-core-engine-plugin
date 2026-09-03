@@ -1,7 +1,7 @@
 export default {
   plugins: {
     tailwindcss: {
-      config: "storage/app/plugins/content-studio-plugin/tailwind.config.js",
+      config: "storage/app/plugins/strategy-engine/tailwind.config.js",
     },
     autoprefixer: {},
   },

@@ -3,19 +3,19 @@ import laravel from "laravel-vite-plugin";
 import path from "path";
 
 export default defineConfig({
-  base: "/plugin-builds/content-studio-plugin/",
+  base: "/plugin-builds/strategy-engine/",
   resolve: {
     dedupe: ["alpinejs"],
   },
   plugins: [
     laravel({
       input: [
-        "storage/app/plugins/content-studio-plugin/resources/css/app.css",
-        "storage/app/plugins/content-studio-plugin/resources/js/app.js",
+        "storage/app/plugins/strategy-engine/resources/css/app.css",
+        "storage/app/plugins/strategy-engine/resources/js/app.js",
       ],
       publicDirectory: "public",
-      buildDirectory: "plugin-builds/content-studio-plugin",
-      hotFile: "public/plugin-builds/content-studio-plugin/hot",
+      buildDirectory: "plugin-builds/strategy-engine",
+      hotFile: "public/plugin-builds/strategy-engine/hot",
       refresh: false,
     }),
   ],
@@ -27,7 +27,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(
       __dirname,
-      "../../../../public/plugin-builds/content-studio-plugin",
+      "../../../../public/plugin-builds/strategy-engine",
     ),
     emptyOutDir: true,
     assetsDir: "assets",

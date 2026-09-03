@@ -25,7 +25,7 @@
     @php
         $meta = collect([
             $date,
-            $time ? __('content-studio-plugin::content_studio.reading_time', ['minutes' => $time]) : null,
+            $time ? __('strategy-engine::content_studio.reading_time', ['minutes' => $time]) : null,
         ])->filter();
     @endphp
 

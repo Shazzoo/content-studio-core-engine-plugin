@@ -6,17 +6,17 @@
     $readTime = $readTime ?? read_time($article->body_html);
     $image_url = $image_url ?? \Illuminate\Support\Facades\Storage::disk('public')->url($article->featured_image_url);
     $prefix = trim((string) ($setting?->route_prefix ?? null ?: 'blog'), '/');
-    $blogBasePath = \Shazzoo\ContentStudio\Support\ArticleRoutes::indexPath($locale, $prefix);
+    $blogBasePath = \Shazzoo\StrategyEngine\Support\ArticleRoutes::indexPath($locale, $prefix);
 @endphp
 
 <div class="mx-auto mt-5 max-w-5xl">
-    <x-content-studio-plugin::article-breadcrumbs :article="$article" :locale="$locale" />
+    <x-strategy-engine::article-breadcrumbs :article="$article" :locale="$locale" />
 
     <header class="py-8">
         <h1 class="mb-3 text-[clamp(34px,4.2vw,50px)] leading-[1.1] text-ink-950">
             {!! $article->title !!}
         </h1>
-        <x-content-studio-plugin::article-info :date="$date" :time="$readTime" :authors="[$article->author_name]" />
+        <x-strategy-engine::article-info :date="$date" :time="$readTime" :authors="[$article->author_name]" />
     </header>
 
     <div class="mb-10">
@@ -25,19 +25,19 @@
     </div>
 
     <div>
-        @include('content-studio-plugin::partials.article-styles')
+        @include('strategy-engine::partials.article-styles')
 
         <div class="article-body max-w-none">
             {!! $article->body_html !!}
         </div>
 
         {{-- Currently hardcoded for testing, is not yet in API response --}}
-        {{-- <x-content-studio-plugin::article-tags /> --}}
+        {{-- <x-strategy-engine::article-tags /> --}}
 
         <section class="mt-14 grid grid-cols-1 gap-8 border-t border-line pt-8 md:grid-cols-2">
             <div>
                 <p class="mb-4 text-xs font-bold uppercase tracking-[0.08em] text-ink-400">
-                    {{ __('content-studio-plugin::content_studio.next_article') }}</p>
+                    {{ __('strategy-engine::content_studio.next_article') }}</p>
                 @if ($previousArticle)
                     <a href="{{ url(rtrim($blogBasePath, '/') . '/' . ltrim((string) $previousArticle->slug, '/')) }}"
                         class="text-xl font-bold text-ink-950 transition hover:text-amber-600">
@@ -45,12 +45,12 @@
                     </a>
                 @else
                     <p class="text-xl font-bold text-ink-400">
-                        {{ __('content-studio-plugin::content_studio.no_previous_article') }}</p>
+                        {{ __('strategy-engine::content_studio.no_previous_article') }}</p>
                 @endif
             </div>
             <div class="text-right">
                 <p class="mb-4 text-xs font-bold uppercase tracking-[0.08em] text-ink-400">
-                    {{ __('content-studio-plugin::content_studio.previous_article') }}</p>
+                    {{ __('strategy-engine::content_studio.previous_article') }}</p>
                 @if ($nextArticle)
                     <a href="{{ url(rtrim($blogBasePath, '/') . '/' . ltrim((string) $nextArticle->slug, '/')) }}"
                         class="text-lg font-bold text-ink-950 transition hover:text-amber-600">
@@ -58,7 +58,7 @@
                     </a>
                 @else
                     <p class="text-xl font-bold text-ink-400">
-                        {{ __('content-studio-plugin::content_studio.no_next_article') }}</p>
+                        {{ __('strategy-engine::content_studio.no_next_article') }}</p>
                 @endif
             </div>
         </section>

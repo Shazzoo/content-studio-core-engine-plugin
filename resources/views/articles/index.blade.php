@@ -5,8 +5,8 @@
 
 @section('content')
     <div class="mx-auto w-full max-w-[1280px] px-5 py-12 md:px-8">
-        @include('content-studio-plugin::components.blocks.article-overview', [
-            'title' => __('content-studio-plugin::content_studio.articles'),
+        @include('strategy-engine::components.blocks.article-overview', [
+            'title' => __('strategy-engine::content_studio.articles'),
             'articles' => $articles,
             'showExcerpt' => true,
             'blogBasePath' => $blogBasePath,

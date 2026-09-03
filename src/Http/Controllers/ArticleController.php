@@ -1,12 +1,12 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Http\Controllers;
+namespace Shazzoo\StrategyEngine\Http\Controllers;
 
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Support\ArticleRoutes;
-use Shazzoo\ContentStudio\Support\Engine\ProjectInfo;
-use Shazzoo\ContentStudio\Support\Seo\ArticleSeoBuilder;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Support\ArticleRoutes;
+use Shazzoo\StrategyEngine\Support\Engine\ProjectInfo;
+use Shazzoo\StrategyEngine\Support\Seo\ArticleSeoBuilder;
 use Shazzoo\ContentStudioCore\Models\Setting;
 use Shazzoo\ContentStudioCore\Support\Seo\SeoApplier;
 use Shazzoo\ContentStudioCore\Support\Theming\TemplateRegistry;
@@ -72,7 +72,7 @@ class ArticleController
             $setting->index_template_key,
             $ns,
             'articles-index',
-            'content-studio-plugin::articles.index',
+            'strategy-engine::articles.index',
         );
 
         $articles = ContentStudioArticle::query()
@@ -141,7 +141,7 @@ class ArticleController
             $setting->article_template_key,
             $ns,
             'articles-show',
-            'content-studio-plugin::articles.show',
+            'strategy-engine::articles.show',
         );
 
         $article = ContentStudioArticle::where('locale', $context['locale'])
@@ -249,8 +249,8 @@ class ArticleController
 
         return [[
             'type' => $pageType === 'show'
-                ? 'content-studio-plugin.article-body'
-                : 'content-studio-plugin.article-overview',
+                ? 'strategy-engine.article-body'
+                : 'strategy-engine.article-overview',
             'data' => $data,
         ]];
     }
@@ -262,8 +262,8 @@ class ArticleController
         }
 
         return $pageType === 'show'
-            ? 'content-studio-plugin::components.blocks.article-body'
-            : 'content-studio-plugin::components.blocks.article-overview';
+            ? 'strategy-engine::components.blocks.article-body'
+            : 'strategy-engine::components.blocks.article-overview';
     }
 
     /**

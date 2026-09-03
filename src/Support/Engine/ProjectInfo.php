@@ -1,10 +1,10 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Support\Engine;
+namespace Shazzoo\StrategyEngine\Support\Engine;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
 
 class ProjectInfo
 {

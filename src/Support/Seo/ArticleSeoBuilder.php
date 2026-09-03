@@ -1,9 +1,9 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Support\Seo;
+namespace Shazzoo\StrategyEngine\Support\Seo;
 
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Support\ArticleRoutes;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Support\ArticleRoutes;
 use Shazzoo\ContentStudioCore\Support\Seo\Dto\SeoMetadata;
 
 final class ArticleSeoBuilder

@@ -1,5 +1,5 @@
 {
-  "name": "shazzoo/content-studio-core-engine-plugin",
+  "name": "shazzoo/strategy-engine-plugin",
   "description": "Content Studio Engine plugin for Content Studio Core: blog articles generated and synced from the Content Studio Engine.",
   "type": "content-studio-plugin",
   "license": "proprietary",
@@ -9,16 +9,16 @@
   },
   "autoload": {
     "psr-4": {
-      "Shazzoo\\ContentStudio\\": "src/"
+      "Shazzoo\\StrategyEngine\\": "src/"
     }
   },
   "extra": {
     "content-studio": {
-      "key": "shazzoo/content-studio-core-engine-plugin",
-      "slug": "content-studio-plugin",
+      "key": "shazzoo/strategy-engine-plugin",
+      "slug": "strategy-engine",
       "name": "Content Studio",
       "description": "Blog articles generated and synced from the Content Studio engine.",
-      "provider": "Shazzoo\\ContentStudio\\PluginServiceProvider"
+      "provider": "Shazzoo\\StrategyEngine\\PluginServiceProvider"
     }
   },
   "minimum-stability": "stable",

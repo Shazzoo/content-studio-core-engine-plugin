@@ -1,6 +1,6 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Http\Controllers;
+namespace Shazzoo\StrategyEngine\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Shazzoo\ContentStudio\Models\ContentStudioArticle;
-use Shazzoo\ContentStudio\Models\ContentStudioSetting;
-use Shazzoo\ContentStudio\Support\ArticleDiagramPlaceholders;
-use Shazzoo\ContentStudio\Support\Engine\ConfirmPublished;
-use Shazzoo\ContentStudio\Support\Engine\ProjectInfo;
+use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
+use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
+use Shazzoo\StrategyEngine\Support\ArticleDiagramPlaceholders;
+use Shazzoo\StrategyEngine\Support\Engine\ConfirmPublished;
+use Shazzoo\StrategyEngine\Support\Engine\ProjectInfo;
 
 class SyncArticles
 {

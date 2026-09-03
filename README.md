@@ -32,7 +32,7 @@ site needs its own copy.
 ## Install
 
 ```bash
-composer require shazzoo/content-studio-core-engine-plugin
+composer require shazzoo/strategy-engine-plugin
 ```
 
 Activate **Content Studio** under *Instellingen → Plugins*. Activating it runs
@@ -81,7 +81,7 @@ php artisan vendor:publish --tag=content-studio-components
 ```
 
 That copies the component views into
-`resources/views/vendor/content-studio-plugin/components/`. Edit them freely —
+`resources/views/vendor/strategy-engine/components/`. Edit them freely —
 markup, classes, structure. Delete any file from that directory and it falls
 back to the package version.
 
@@ -113,8 +113,8 @@ pages and pagination.
 project's namespaces to this package's:
 
 ```
-content-studio-plugin::            (view and translation namespace)
-Shazzoo\ContentStudio\             (PHP classes, including inside @php blocks)
+strategy-engine::            (view and translation namespace)
+Shazzoo\StrategyEngine\             (PHP classes, including inside @php blocks)
 ```
 
 A stale namespace in an override fails at render time, not at install time.
@@ -170,18 +170,18 @@ Core registers the site override directory ahead of the package's own views, so
 the finder picks the first path that has the file:
 
 ```
-1. resources/views/vendor/content-studio-plugin/                      ← your overrides
-2. vendor/shazzoo/content-studio-core-engine-plugin/resources/views/  ← package defaults
+1. resources/views/vendor/strategy-engine/                      ← your overrides
+2. vendor/shazzoo/strategy-engine-plugin/resources/views/  ← package defaults
 ```
 
 Resolution is per file, not all-or-nothing.
 
 ### A note on the view namespace
 
-The package is `shazzoo/content-studio-core-engine-plugin`, but the plugin slug
-is **`content-studio-plugin`**, so views and components resolve as
-`content-studio-plugin::…`. Do not change the slug without updating every
-`content-studio-plugin::` reference and `<x-content-studio-plugin::…>` tag in
+The package is `shazzoo/strategy-engine-plugin`, but the plugin slug
+is **`strategy-engine`**, so views and components resolve as
+`strategy-engine::…`. Do not change the slug without updating every
+`strategy-engine::` reference and `<x-strategy-engine::…>` tag in
 every theme that uses it.
 
 ## Other publishable tags
@@ -202,7 +202,7 @@ hand-built path — it checks the same flag, so the same code works on
 single-language and multilingual sites:
 
 ```php
-use Shazzoo\ContentStudio\Support\ArticleRoutes;
+use Shazzoo\StrategyEngine\Support\ArticleRoutes;
 
 ArticleRoutes::indexPath($locale);
 ArticleRoutes::articleUrl($slug, $locale);
@@ -221,7 +221,7 @@ Point a site at a working copy:
 ```json
 {
   "repositories": [
-    { "type": "path", "url": "../content-studio-core-engine-plugin" }
+    { "type": "path", "url": "../strategy-engine-plugin" }
   ]
 }
 ```

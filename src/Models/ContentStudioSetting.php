@@ -1,6 +1,6 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Models;
+namespace Shazzoo\StrategyEngine\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

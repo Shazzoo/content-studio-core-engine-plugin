@@ -1,12 +1,12 @@
 <?php
 
-namespace Shazzoo\ContentStudio;
+namespace Shazzoo\StrategyEngine;
 
 class Plugin
 {
     public static function key(): string
     {
-        return 'shazzoo/content-studio-core-engine-plugin';
+        return 'shazzoo/strategy-engine-plugin';
     }
 
     public static function provider(): string

@@ -3,9 +3,9 @@
     $title = $title ?? 'Latest Articles';
     $showExcerpt = $showExcerpt ?? true;
     $locale = app()->getLocale();
-    $setting = \Shazzoo\ContentStudio\Models\ContentStudioSetting::singleton();
+    $setting = \Shazzoo\StrategyEngine\Models\ContentStudioSetting::singleton();
     $prefix = trim((string) ($setting->route_prefix ?: 'blog'), '/');
-    $blogBasePath = $blogBasePath ?? \Shazzoo\ContentStudio\Support\ArticleRoutes::indexPath($locale, $prefix);
+    $blogBasePath = $blogBasePath ?? \Shazzoo\StrategyEngine\Support\ArticleRoutes::indexPath($locale, $prefix);
 
     if (isset($data) && is_array($data)) {
         $title = (string) ($data['title'] ?? $title);
@@ -15,7 +15,7 @@
     if (!isset($articles)) {
         $limit = 3;
 
-        $articles = \Shazzoo\ContentStudio\Models\ContentStudioArticle::query()
+        $articles = \Shazzoo\StrategyEngine\Models\ContentStudioArticle::query()
             ->where('locale', $locale)
             ->whereNotNull('slug')
             ->where('slug', '!=', '')
@@ -33,16 +33,16 @@
         <h2>{{ $title }}</h2>
         <a href="{{ $allArticlesUrl }}"
             class="inline-flex items-center rounded-lg border border-transparent bg-amber px-4 py-2 text-sm font-bold text-amber-ink transition hover:bg-amber-hover">
-            {{ __('content-studio-plugin::content_studio.all_articles') }}
+            {{ __('strategy-engine::content_studio.all_articles') }}
         </a>
     </div>
 
     @if ($articles->isEmpty())
-        <p class="text-sm text-ink-600">{{ __('content-studio-plugin::content_studio.no_articles_available') }}</p>
+        <p class="text-sm text-ink-600">{{ __('strategy-engine::content_studio.no_articles_available') }}</p>
     @else
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
             @foreach ($articles as $article)
-                <x-content-studio-plugin::article-card :article="$article" :clickable="true" :show-excerpt="$showExcerpt" :blog-base-path="$blogBasePath" />
+                <x-strategy-engine::article-card :article="$article" :clickable="true" :show-excerpt="$showExcerpt" :blog-base-path="$blogBasePath" />
             @endforeach
         </div>
     @endif

@@ -1,10 +1,10 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Console\Commands;
+namespace Shazzoo\StrategyEngine\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Shazzoo\ContentStudio\Http\Controllers\SyncArticles;
+use Shazzoo\StrategyEngine\Http\Controllers\SyncArticles;
 
 class ContentStudioArticleSync extends Command
 {

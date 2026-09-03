@@ -5,9 +5,9 @@
 
     $image_url = Storage::disk('public')->url($article->featured_image_url);
     $locale = app()->getLocale();
-    $setting = \Shazzoo\ContentStudio\Models\ContentStudioSetting::singleton();
+    $setting = \Shazzoo\StrategyEngine\Models\ContentStudioSetting::singleton();
     $prefix = trim((string) ($setting->route_prefix ?: 'blog'), '/');
-    $blogBasePath = $blogBasePath ?? \Shazzoo\ContentStudio\Support\ArticleRoutes::indexPath($locale, $prefix);
+    $blogBasePath = $blogBasePath ?? \Shazzoo\StrategyEngine\Support\ArticleRoutes::indexPath($locale, $prefix);
     $readTime = $readTime ?? read_time($article->body_html);
     $fm = new IntlDateFormatter($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
     $date = $fm->format($article->generated_at);
@@ -55,12 +55,12 @@
             @if (!$clickable)
                 <a href="{{ $url }}"
                     class="mt-4 text-sm font-bold text-ink-950 transition hover:text-amber-600 hover:underline">
-                    {{ __('content-studio-plugin::content_studio.read_more') }}
+                    {{ __('strategy-engine::content_studio.read_more') }}
                 </a>
             @else
                 <span
                     class="mt-4 text-sm font-bold text-ink-950 transition group-hover:text-amber-600 group-hover:underline">
-                    {{ __('content-studio-plugin::content_studio.read_more') }}
+                    {{ __('strategy-engine::content_studio.read_more') }}
                 </span>
             @endif
         @endif

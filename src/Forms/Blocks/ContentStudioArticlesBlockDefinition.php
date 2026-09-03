@@ -1,6 +1,6 @@
 <?php
 
-namespace Shazzoo\ContentStudio\Forms\Blocks;
+namespace Shazzoo\StrategyEngine\Forms\Blocks;
 
 use Shazzoo\ContentStudioCore\Support\Blocks\BlockDefinition;
 use Shazzoo\ContentStudioCore\Support\Fields\Definitions\TextInput;

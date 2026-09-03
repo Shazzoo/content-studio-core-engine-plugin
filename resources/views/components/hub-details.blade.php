@@ -22,7 +22,7 @@
 @endphp
 
 <div class="mx-auto mt-5 max-w-7xl">
-    <x-content-studio-plugin::article-breadcrumbs :article="$article" :locale="$locale" />
+    <x-strategy-engine::article-breadcrumbs :article="$article" :locale="$locale" />
     <header class="pt-8">
         <div class="flex flex-col items-center gap-12 lg:flex-row">
             <div class="md:w-2/3">
@@ -36,7 +36,7 @@
                 </p>
 
                 <div class="pt-6">
-                    <x-content-studio-plugin::article-info :date="$date" :time="$readTime" :authors="$authors" />
+                    <x-strategy-engine::article-info :date="$date" :time="$readTime" :authors="$authors" />
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
                 <div class="sticky top-36">
                     <div>
                         <h4 class="mb-4 ml-2 text-xs font-bold uppercase tracking-[0.08em] text-ink-600">
-                            {{ __('content-studio-plugin::content_studio.table_of_contents') }}
+                            {{ __('strategy-engine::content_studio.table_of_contents') }}
                         </h4>
                         <nav class="space-y-3 border-l border-line">
                             @foreach ($headings as $heading)
@@ -68,16 +68,16 @@
 
                     <div class="rounded-lg border border-line bg-bg-alt p-6">
                         <p class="mb-2 text-xs font-bold uppercase text-ink-400">
-                            {{ __('content-studio-plugin::content_studio.expert_review') }}</p>
+                            {{ __('strategy-engine::content_studio.expert_review') }}</p>
                         <p class="text-sm leading-relaxed text-ink-800">
-                            {{ __('content-studio-plugin::content_studio.updated_on_by_team', ['date' => $date]) }}
+                            {{ __('strategy-engine::content_studio.updated_on_by_team', ['date' => $date]) }}
                         </p>
                     </div>
                 </div>
             </aside>
 
             <section class="lg:w-3/4">
-                @include('content-studio-plugin::partials.article-styles')
+                @include('strategy-engine::partials.article-styles')
 
                 <section class="article-body max-w-none">
                     {!! $processedBody !!}
@@ -85,14 +85,14 @@
 
                 <section id="verdieping" class="mt-24 border-t border-line pt-16">
                     <h2 class="mb-2 text-3xl font-black text-ink-950">
-                        {{ __('content-studio-plugin::content_studio.cluster_overview') }}
+                        {{ __('strategy-engine::content_studio.cluster_overview') }}
                     </h2>
                     <p class="mb-10 text-lg leading-relaxed text-ink-600">
-                        {{ __('content-studio-plugin::content_studio.dive_into_details') }}</p>
+                        {{ __('strategy-engine::content_studio.dive_into_details') }}</p>
 
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                         @foreach ($article->related_hub_articles as $child_article)
-                            <x-content-studio-plugin::article-card :article="$child_article" :clickable="true" />
+                            <x-strategy-engine::article-card :article="$child_article" :clickable="true" />
                         @endforeach
                     </div>
                 </section>
