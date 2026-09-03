@@ -44,7 +44,7 @@
                 <div class="relative">
                     <div class="absolute inset-0 rotate-2 rounded-lg bg-amber-soft"></div>
                     <img src="{{ $image_url }}" alt="{{ $article->featured_image_alt }}"
-                        class="relative aspect-[16/9] w-full -rotate-2 rounded-lg border border-line object-cover shadow-sm transition duration-500 hover:rotate-0">
+                        class="cs-featured-image relative aspect-[16/9] w-full -rotate-2 rounded-lg border border-line object-cover shadow-sm transition duration-500 hover:rotate-0">
                 </div>
             </div>
         </div>

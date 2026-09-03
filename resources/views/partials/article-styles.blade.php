@@ -10,6 +10,15 @@
 --}}
 @once
     <style>
+        /* Uitgelichte afbeelding: vast 16:9 kader dat de afbeelding vult.
+           Staat hier zodat het werkt zonder dat de site de plugin in zijn
+           Tailwind-config hoeft op te nemen. */
+        .cs-featured-image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
         .article-body {
             --cs-pull-quote-accent: #f59e0b;
             --cs-pull-quote-bg: rgb(245 158 11 / 0.06);
