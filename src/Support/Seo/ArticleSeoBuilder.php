@@ -77,9 +77,14 @@ final class ArticleSeoBuilder
      */
     public function build(ContentStudioArticle $article, ?string $locale = null): SeoMetadata
     {
-        // 1. Haal de SEO velden uit het artikel model (ervan uitgaande dat je een 'seo' JSON kolom hebt)
-        $title = $article->title ?? '';
+        // 1. De Engine levert eigen SEO- en OG-titels aan; die gaan voor op de
+        //    artikeltitel. Ontbreken ze, dan valt alles terug op de titel en de
+        //    meta description, zoals voorheen.
+        $title = $this->firstFilled($article->seo_title, $article->title) ?? '';
         $description = $article->meta_description ?? '';
+
+        $ogTitle = $this->firstFilled($article->og_title, $title);
+        $ogDescription = $this->firstFilled($article->og_description, $description);
 
         // 2. Bouw de automatische Canonical URL
         $canonical = $this->articleUrl($article->slug, $locale);
@@ -104,8 +109,8 @@ final class ArticleSeoBuilder
             canonical: $canonical,
             alternates: $alternates,
             openGraph: [
-                'title' => $title,
-                'description' => $description,
+                'title' => $ogTitle,
+                'description' => $ogDescription,
                 'url' => $canonical,
                 'type' => 'article',
                 'article:published_time' => $article->created_at?->toIso8601String(),
@@ -115,7 +120,7 @@ final class ArticleSeoBuilder
             jsonLd: [
                 '@context' => 'https://schema.org',
                 '@type' => 'BlogPosting',
-                'headline' => $title,
+                'headline' => $article->title ?? $title,
                 'description' => $description,
                 'url' => $canonical,
                 'datePublished' => $article->created_at?->toIso8601String(),
@@ -144,6 +149,20 @@ final class ArticleSeoBuilder
             ],
             robots: $robots,
         );
+    }
+
+    /**
+     * De eerste waarde die daadwerkelijk gevuld is; lege strings tellen niet mee.
+     */
+    private function firstFilled(?string ...$values): ?string
+    {
+        foreach ($values as $value) {
+            if (filled($value)) {
+                return $value;
+            }
+        }
+
+        return null;
     }
 
     private function articleIndexUrl(?string $locale = null, array $parameters = []): string

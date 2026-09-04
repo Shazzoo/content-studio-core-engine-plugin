@@ -210,6 +210,11 @@ class SyncArticles
             $image_extension = pathinfo($featured_image_url, PATHINFO_EXTENSION) ?? 'jpg';
             $image_filename = pathinfo($featured_image_url, PATHINFO_FILENAME) ?? $id;
             $meta_description = $item['meta_description'] ?? null;
+            $seo_title = $item['seo_title'] ?? null;
+            $og_title = $item['og_title'] ?? null;
+            $og_description = $item['og_description'] ?? null;
+            $twitter_title = $item['twitter_title'] ?? null;
+            $twitter_description = $item['twitter_description'] ?? null;
             $slug = $item['slug'] ?? null;
             $locale = str_replace('_', '-', strtolower(trim((string) ($item['locale'] ?? ''))));
             if ($locale === '') {
@@ -273,6 +278,11 @@ class SyncArticles
                     'featured_image_url' => $upload_path,
                     'featured_image_alt' => $featured_image_alt,
                     'meta_description' => $meta_description,
+                    'seo_title' => $seo_title,
+                    'og_title' => $og_title,
+                    'og_description' => $og_description,
+                    'twitter_title' => $twitter_title,
+                    'twitter_description' => $twitter_description,
                     'slug' => $slug,
                     'cta' => $cta,
                     'primary_keyword' => $primary_keyword,
