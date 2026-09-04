@@ -7,6 +7,12 @@
     "php": "^8.3",
     "shazzoo/content-studio-core": "^1.0"
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:Shazzoo/content-studio-core.git"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Shazzoo\\StrategyEngine\\": "src/"
@@ -22,5 +28,21 @@
     }
   },
   "minimum-stability": "stable",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "require-dev": {
+    "pestphp/pest": "^4.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Shazzoo\\StrategyEngine\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/pest"
+  }
 }
