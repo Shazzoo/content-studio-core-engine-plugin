@@ -9,7 +9,7 @@ use Shazzoo\StrategyEngine\Http\Controllers\SyncArticles;
 
 class ContentStudioArticleSync extends Command
 {
-    protected $signature = 'content-studio:articles {--status=approved : Statusfilter voor de Engine; "all" haalt ook al gepubliceerde artikelen opnieuw op}';
+    protected $signature = 'content-studio:articles {--status=approved : Statusfilter voor de Engine: approved, published, een kommalijst, of "all" voor alles}';
 
     protected $description = 'Sync content articles from the Content Studio API.';
 
