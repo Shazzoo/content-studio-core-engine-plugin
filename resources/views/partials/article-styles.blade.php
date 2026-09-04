@@ -20,7 +20,32 @@
             object-fit: cover;
         }
 
+        /* Afbeeldingen die de Engine als placeholder in de tekst zet
+           (diagrammen, illustraties en latere typen). */
+        .article-body .article-image {
+            margin: 2rem 0;
+        }
+
+        .article-body .article-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        .article-body .article-image figcaption {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--cs-caption-text);
+        }
+
+        .article-body .article-image figcaption:empty {
+            display: none;
+        }
+
         .article-body {
+            --cs-caption-text: #475569;
             --cs-pull-quote-accent: #f59e0b;
             --cs-pull-quote-bg: rgb(245 158 11 / 0.06);
             --cs-pull-quote-text: #0f172a;
@@ -74,6 +99,7 @@
         [data-theme='dark'] .article-body {
             --cs-pull-quote-bg: rgb(245 158 11 / 0.12);
             --cs-pull-quote-text: #ffffff;
+            --cs-caption-text: #cbd5e1;
         }
     </style>
 @endonce

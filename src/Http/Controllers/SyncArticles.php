@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Shazzoo\StrategyEngine\Models\ContentStudioArticle;
 use Shazzoo\StrategyEngine\Models\ContentStudioSetting;
-use Shazzoo\StrategyEngine\Support\ArticleDiagramPlaceholders;
+use Shazzoo\StrategyEngine\Support\ArticleImagePlaceholders;
 use Shazzoo\StrategyEngine\Support\Engine\ConfirmPublished;
 use Shazzoo\StrategyEngine\Support\Engine\ProjectInfo;
 
@@ -187,10 +187,15 @@ class SyncArticles
             $excerpt = $item['excerpt'] ?? null;
             $body_html = $item['body_html'] ?? null;
             if (is_string($body_html)) {
-                $body_html = ArticleDiagramPlaceholders::replace(
+                $body_html = ArticleImagePlaceholders::replace(
                     $body_html,
                     $item,
-                    fn (string $imageUrl, ?string $placeholderId, array $entry): string => $this->storeDiagramImage($imageUrl, $id, $placeholderId)
+                    fn (string $imageUrl, ?string $placeholderId, array $entry): string => $this->storePlaceholderImage(
+                        $imageUrl,
+                        $id,
+                        $placeholderId,
+                        is_string($entry['type'] ?? null) ? $entry['type'] : 'image'
+                    )
                 );
             }
             $featured_image_url = $item['featured_image_url'] ?? null;
@@ -301,10 +306,10 @@ class SyncArticles
         }
     }
 
-    private function storeDiagramImage(string $imageUrl, mixed $contentId, ?string $placeholderId): string
+    private function storePlaceholderImage(string $imageUrl, mixed $contentId, ?string $placeholderId, string $type = 'image'): string
     {
         if (! filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-            Log::warning('[StrategyEngine] Invalid diagram image URL: '.$imageUrl);
+            Log::warning('[StrategyEngine] Invalid placeholder image URL: '.$imageUrl);
 
             return $imageUrl;
         }
@@ -312,7 +317,7 @@ class SyncArticles
         try {
             $response = Http::timeout(20)->get($imageUrl);
         } catch (\Throwable $e) {
-            Log::warning('[StrategyEngine] Diagram image download failed', [
+            Log::warning('[StrategyEngine] Placeholder image download failed', [
                 'url' => $imageUrl,
                 'error' => $e->getMessage(),
             ]);
@@ -321,7 +326,7 @@ class SyncArticles
         }
 
         if ($response->failed()) {
-            Log::warning('[StrategyEngine] Diagram image download returned an error', [
+            Log::warning('[StrategyEngine] Placeholder image download returned an error', [
                 'url' => $imageUrl,
                 'status' => $response->status(),
             ]);
@@ -332,7 +337,8 @@ class SyncArticles
         $directory = preg_replace('/[^A-Za-z0-9_-]/', '-', (string) ($contentId ?: 'unknown'));
         $filename = preg_replace('/[^A-Za-z0-9_-]/', '-', (string) ($placeholderId ?: sha1($imageUrl)));
         $extension = $this->imageExtension($imageUrl, $response->header('Content-Type'));
-        $path = "content_studio_images/{$directory}/diagrams/{$filename}.{$extension}";
+        $folder = preg_replace('/[^a-z0-9-]/', '', strtolower($type)) ?: 'image';
+        $path = "content_studio_images/{$directory}/{$folder}s/{$filename}.{$extension}";
 
         Storage::disk('public')->put($path, $response->body());
 
