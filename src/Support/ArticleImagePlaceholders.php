@@ -78,10 +78,13 @@ class ArticleImagePlaceholders
                 continue;
             }
 
-            // De samengevoegde lijst wint: staat hij er, dan zijn de oude
-            // lijsten er alleen nog een duplicaat van.
-            if (is_array($source['image_placeholders'] ?? null)) {
-                $entries = array_merge($entries, self::entriesFromPayload($source['image_placeholders'], self::DEFAULT_TYPE));
+            // De samengevoegde lijst wint, maar alleen als er ook echt iets in
+            // staat: een Engine die het veld al meestuurt maar nog niet vult,
+            // levert een lege array en moet op de oude lijsten terugvallen.
+            $merged = $source['image_placeholders'] ?? null;
+
+            if (is_array($merged) && $merged !== []) {
+                $entries = array_merge($entries, self::entriesFromPayload($merged, self::DEFAULT_TYPE));
 
                 continue;
             }
