@@ -3,12 +3,13 @@
 namespace Shazzoo\StrategyEngine\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Shazzoo\StrategyEngine\Http\Controllers\SyncArticles;
 
 class ContentStudioArticleSync extends Command
 {
-    protected $signature = 'content-studio:articles';
+    protected $signature = 'content-studio:articles {--status=approved : Statusfilter voor de Engine; "all" haalt ook al gepubliceerde artikelen opnieuw op}';
 
     protected $description = 'Sync content articles from the Content Studio API.';
 
@@ -17,7 +18,9 @@ class ContentStudioArticleSync extends Command
         Log::info('[ContentStudioArticleSync] Starting article sync...');
         $this->info('Starting Content Studio sync...');
 
-        $result = $syncArticles->__invoke(request());
+        $status = (string) $this->option('status');
+
+        $result = $syncArticles->__invoke(Request::create('/', 'GET', ['status' => $status]));
 
         if (! is_array($result)) {
             $this->warn('Sync finished without structured output. Check logs.');

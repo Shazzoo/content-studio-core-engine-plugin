@@ -46,8 +46,15 @@ class SyncArticles
         // Only content the engine has not seen confirmed as published, i.e. not
         // yet on this site. ConfirmPublished flips the status afterwards, so a
         // synced article drops out of this list. Pagination carries the filter
-        // forward via links.next.
-        $url_next = "{$api_url}/projects/{$project_code}/contents?status=approved";
+        // forward via links.next. Met status=all vervalt het filter en komen
+        // ook al bevestigde artikelen weer mee, handig om lokaal de rendering
+        // van bestaande content te controleren.
+        $status_filter = trim((string) $request->query('status', 'approved'));
+        $url_next = "{$api_url}/projects/{$project_code}/contents";
+
+        if ($status_filter !== '' && $status_filter !== 'all') {
+            $url_next .= '?status='.urlencode($status_filter);
+        }
 
         $stats = [
             'ok' => true,
