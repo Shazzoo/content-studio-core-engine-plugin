@@ -9,11 +9,6 @@ class Tracking
      */
     public const DEFAULT_ENDPOINT = 'https://engine.content-studio.com/api/tracking/event';
 
-    /**
-     * Pad van het gepubliceerde script binnen public/.
-     */
-    public const PUBLIC_PATH = 'vendor/strategy-engine/tracking.js';
-
     public static function enabled(): bool
     {
         return (bool) config('content-studio.tracking.enabled', true);
@@ -36,19 +31,12 @@ class Tracking
     }
 
     /**
-     * Geef het gepubliceerde bestand voorrang: dat serveert de webserver
-     * direct, ook als die /js/* als statische assets afhandelt en het
-     * verzoek dus nooit bij PHP aankomt. Zonder publicatie valt het terug
-     * op de route.
+     * Het script komt altijd uit de package, via de route. Het wordt
+     * bewust niet naar public/ gepubliceerd: een gekopieerd bestand raakt
+     * bij een plugin-update achter zonder dat iemand dat merkt.
      */
     public static function scriptUrl(): string
     {
-        $file = public_path(self::PUBLIC_PATH);
-
-        if (is_file($file)) {
-            return asset(self::PUBLIC_PATH).'?v='.filemtime($file);
-        }
-
         return route('content-studio.tracking-script');
     }
 }
